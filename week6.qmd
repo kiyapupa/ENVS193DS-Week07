@@ -1,7 +1,7 @@
 ---
 title: "week 7 coding workshop"
 format: html
-execute
+execute:
   warning: false
   message: false
 ---
@@ -49,23 +49,29 @@ maples_model
 check assumptions
 
 1.  linear relationship between variables: yes(used exploratory data visualization to do this
-
 2.   independence of errors: yes! made on how data were collected
-
 3.  homoskedasticity of errors: yes! making decision from residuals versus fitted plot/scale location plots
-
 4.  normal distributed errors: yes! (looking at QQ plot of residuals
 
-5.  <div>
-
-    2.  <div>
-
-        </div>
-
-    </div>
-
 ```{r checking assumptions}
+#plot(maples_model)
+par(mfrow = c(2, 2))
 plot(maples_model)
-par(mfrom = c(2, 2))
-plot(maples_model)
+```
+
+```{r turning off grid, results = FALSE}
+dev.off()
+```
+
+```{r predictions}
+predictions <- ggpredict(maples_model, terms = "stem_length")
+```
+
+```{r plotting-predictions}
+plot_predictions <-ggplot(data = maples_data, aes(x = stem_length, y = stem_dry_mass)) + 
+  #plotting underlying data
+  geom_point() +geom_line(data = predictions, aes(x = x, y = predicted), color = "blue", linewidth = 1) +
+  geom_ribbon(data = predictions, aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high), alpha = 2)
+
+plot_predictions
 ```
